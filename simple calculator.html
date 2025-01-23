@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Calculator</title>
+<style>
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+    .container{
+        justify-content: center;
+        align-items: center;
+       background: #FF7400;
+       border-radius:5px;
+       box-shadow: 0 0 10px;
+       max-width: 400px;
+    }
+   button{
+     padding:10px;
+     margin: 5px;
+     width: 70px;
+     height: 50px;
+     border-radius: 50px;
+     font-size: 25px;
+     border: none;
+     outline: none;
+     background: rgba(255, 116, 0.7, 1);
+    
+     
+   }
+   button:active{
+       background:rgba(255, 128, 25, 50%); 
+   }
+ 
+   .button{
+       background: #FF9F4F;
+       border-radius:5px;
+   }
+   input{
+       margin: 5px;
+       padding: 5px;
+       width:90%;
+       background: #E66F0C;
+       height:30px;
+       border-radius:5px;
+       outline: none;
+       border: none;
+       color: #FFFFFF;
+       font-size: 20px;
+       text-align: left;
+   }
+   
+</style>    
+</head>
+
+<body>
+<div class="container">
+    
+    <input type="text" name="" id="display" value="" readonly dir="" placeholder="Input field"/>
+    <input  id="output" readonly placeholder="Output field">
+    <div class="button">
+     <button onclick="number('+')">+</button>
+     <button onclick="number(1)">1</button>  
+     <button onclick="number(2)">2</button> 
+     <button onclick="number(3)">3</button><br />
+     <button onclick="number('-')">-</button> 
+     <button onclick="number(4)">4</button> 
+     <button onclick="number(5)">5</button> 
+     <button onclick="number(7)">6</button> <br />
+     <button onclick="number('*')">*</button> 
+     <button onclick="number(7)">7</button> 
+     <button onclick="number(8)">8</button> 
+     <button onclick="number(9)">9</button> <br />
+     <button onclick="number('/')">/</button>   
+     <button onclick="number(0)">0</button>
+       <button onclick="clearvalue()">C</button> 
+       <button  onclick="calculate()">=</button>
+
+    </div>
+</div>
+<script>
+let memory={}
+
+let display=document.getElementById('display');
+let output=display.nextElementSibling;
+let a=''
+function number(data){
+   a +=data;
+   display.value=a;
+}    
+
+function calculate(){
+    try{
+    if (memory[display.value]) {
+   output.value=memory[display.value];
+    
+    } else {
+    output.value=eval(a)
+    
+    }   
+    }catch(e){
+      output.value='Err';
+        console.log(e.message)
+    }
+}
+function clearvalue(){
+    memory[display.value]=eval(display.value);
+    a=''
+    display.value='';
+
+    
+}
+
+window.ondblclick=() => {
+    console.log(memory)
+}
+</script>
+</body>
+</html>
