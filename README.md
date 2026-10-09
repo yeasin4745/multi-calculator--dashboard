@@ -119,16 +119,3 @@ multi-calculator--dashboard/
 
 ---
 
-## 🤝 Contributing
-
-Feel free to fork, modify, and create pull requests. All contributions are welcome!
-
----
-
-## 📜 License
-
-This project is open source and free to use for anyone.
-
----
-
-**Made with ❤️ for everyone**
