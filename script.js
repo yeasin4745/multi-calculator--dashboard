@@ -1,24 +1,45 @@
-// ==================== TAB SWITCHING ====================
+// ============================================
+// Multi-Calculator Dashboard - Professional JavaScript
+// ============================================
+
+// ============================================
+// INITIALIZATION
+// ============================================
+
+document.addEventListener('DOMContentLoaded', () => {
+    initTabs();
+    initUnitCategories();
+    setMaxDateForAgeCalculator();
+    initTouchFeedback();
+    initKeyboardSupport();
+});
+
 function initTabs() {
-    document.querySelectorAll('.tab-button').forEach(button => {
+    const tabButtons = document.querySelectorAll('.tab-button');
+    tabButtons.forEach(button => {
         button.addEventListener('click', () => {
+            // Remove active class from all tabs and contents
             document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+            
+            // Add active class to clicked tab and corresponding content
             button.classList.add('active');
             const tabId = button.getAttribute('data-tab');
             document.getElementById(tabId).classList.add('active');
+            
+            // Scroll to top of dashboard
+            document.querySelector('.dashboard-container').scrollTop = 0;
         });
     });
 }
 
-// ==================== UNIT CONVERTER CATEGORY SWITCHING ====================
-let currentUnitCategory = 'length';
-
 function initUnitCategories() {
-    document.querySelectorAll('.unit-category').forEach(button => {
+    const categoryButtons = document.querySelectorAll('.unit-category');
+    categoryButtons.forEach(button => {
         button.addEventListener('click', () => {
             document.querySelectorAll('.unit-category').forEach(btn => btn.classList.remove('active'));
             document.querySelectorAll('.unit-options').forEach(opt => opt.classList.remove('active'));
+            
             button.classList.add('active');
             currentUnitCategory = button.getAttribute('data-category');
             document.getElementById(`unit-${currentUnitCategory}`).classList.add('active');
@@ -26,18 +47,51 @@ function initUnitCategories() {
     });
 }
 
-// ==================== SIMPLE CALCULATOR ====================
+function setMaxDateForAgeCalculator() {
+    const dobInput = document.getElementById('age-dob');
+    if (dobInput) {
+        dobInput.max = new Date().toISOString().split('T')[0];
+    }
+}
+
+function initTouchFeedback() {
+    // Add touch feedback for mobile devices
+    const touchElements = document.querySelectorAll('.calc-btn, .btn, .tab-button, .unit-category');
+    touchElements.forEach(el => {
+        el.addEventListener('touchstart', () => {
+            el.classList.add('active');
+        });
+        el.addEventListener('touchend', () => {
+            el.classList.remove('active');
+        });
+    });
+}
+
+// ============================================
+// SIMPLE CALCULATOR
+// ============================================
+
 let simpleMemory = null;
 let simpleHistory = [];
 
 function simpleAppend(value) {
     const display = document.getElementById('simple-display');
+    
+    // Prevent multiple decimal points
+    if (value === '.' && display.value.includes('.')) {
+        const lastPart = display.value.split(/[+\-*/]/).pop();
+        if (lastPart.includes('.')) return;
+    }
+    
     display.value += value;
+    display.scrollLeft = display.scrollWidth;
 }
 
 function simpleClear() {
-    document.getElementById('simple-display').value = '';
-    document.getElementById('simple-output').value = '';
+    const display = document.getElementById('simple-display');
+    const output = document.getElementById('simple-output');
+    display.value = '';
+    output.value = '';
 }
 
 function simpleCalculate() {
@@ -46,19 +100,37 @@ function simpleCalculate() {
     
     try {
         if (display.value === '') return;
+        
+        // Sanitize input - only allow numbers and basic operators
         const sanitized = display.value.replace(/[^0-9+\-*/().]/g, '');
         if (sanitized !== display.value) {
             output.value = 'Invalid input';
             return;
         }
+        
+        // Check for balanced parentheses
+        if ((sanitized.match(/\(/g) || []).length !== (sanitized.match(/\)/g) || []).length) {
+            output.value = 'Unbalanced parentheses';
+            return;
+        }
+        
+        // Check for invalid sequences
+        if (/[+\-*/]{2,}/.test(sanitized) || /[+\-*/]$/.test(sanitized) || /^[+*/]/.test(sanitized)) {
+            output.value = 'Invalid expression';
+            return;
+        }
+        
         const result = Function('"use strict"; return (' + sanitized + ')')();
+        
         if (isNaN(result) || !isFinite(result)) {
             output.value = 'Error';
         } else {
-            output.value = result;
+            output.value = formatNumber(result);
+            
+            // Add to history
             simpleHistory.unshift({
                 expression: display.value,
-                result: result,
+                result: formatNumber(result),
                 timestamp: new Date().toLocaleTimeString()
             });
             if (simpleHistory.length > 10) simpleHistory.pop();
@@ -92,6 +164,8 @@ function simpleMemoryClear() {
 
 function updateSimpleHistory() {
     const historyList = document.getElementById('simple-history');
+    if (!historyList) return;
+    
     historyList.innerHTML = '';
     simpleHistory.forEach(item => {
         const div = document.createElement('div');
@@ -101,7 +175,10 @@ function updateSimpleHistory() {
     });
 }
 
-// ==================== AGE CALCULATOR ====================
+// ============================================
+// AGE CALCULATOR
+// ============================================
+
 let ageHistory = [];
 
 function calculateAge() {
@@ -111,8 +188,8 @@ function calculateAge() {
     const birthdayDiv = document.getElementById('next-birthday');
     const countdownDiv = document.getElementById('birthday-countdown');
     
-    if (!dobInput.value) {
-        alert('Please enter your date of birth');
+    if (!dobInput || !dobInput.value) {
+        showToast('Please enter your date of birth');
         return;
     }
 
@@ -120,10 +197,11 @@ function calculateAge() {
     const today = new Date();
     
     if (dob > today) {
-        alert('Date of birth cannot be in the future');
+        showToast('Date of birth cannot be in the future');
         return;
     }
 
+    // Calculate age with high precision
     let years = today.getFullYear() - dob.getFullYear();
     let months = today.getMonth() - dob.getMonth();
     let days = today.getDate() - dob.getDate();
@@ -131,12 +209,14 @@ function calculateAge() {
     let minutes = today.getMinutes() - dob.getMinutes();
     let seconds = today.getSeconds() - dob.getSeconds();
 
+    // Adjust for negative values
     if (seconds < 0) { minutes--; seconds += 60; }
     if (minutes < 0) { hours--; minutes += 60; }
     if (hours < 0) { days--; hours += 24; }
     if (days < 0) {
         months--;
-        days += new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+        const lastDayOfPrevMonth = new Date(today.getFullYear(), today.getMonth(), 0).getDate();
+        days += lastDayOfPrevMonth;
     }
     if (months < 0) { years--; months += 12; }
 
@@ -168,8 +248,11 @@ function calculateAge() {
     `;
     resultDiv.style.display = 'block';
 
+    // Calculate next birthday
     const nextBirthday = new Date(today.getFullYear(), dob.getMonth(), dob.getDate());
-    if (nextBirthday < today) nextBirthday.setFullYear(today.getFullYear() + 1);
+    if (nextBirthday < today) {
+        nextBirthday.setFullYear(today.getFullYear() + 1);
+    }
     
     const diffTime = nextBirthday - today;
     const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
@@ -178,11 +261,13 @@ function calculateAge() {
     const diffSeconds = Math.floor((diffTime % (1000 * 60)) / 1000);
 
     countdownDiv.innerHTML = `
-        <p>Your next birthday is in: <strong>${diffDays} days, ${diffHours} hours, ${diffMinutes} minutes, ${diffSeconds} seconds</strong></p>
+        <p>Your next birthday is in:</p>
+        <p><strong>${diffDays} days, ${diffHours} hours, ${diffMinutes} minutes, ${diffSeconds} seconds</strong></p>
         <p>Date: <strong>${nextBirthday.toDateString()}</strong></p>
     `;
     birthdayDiv.style.display = 'block';
 
+    // Add to history
     ageHistory.unshift({
         dob: dobInput.value,
         age: `${years} years, ${months} months, ${days} days`,
@@ -200,6 +285,8 @@ function clearAge() {
 
 function updateAgeHistory() {
     const historyList = document.getElementById('age-history');
+    if (!historyList) return;
+    
     historyList.innerHTML = '';
     ageHistory.forEach(item => {
         const div = document.createElement('div');
@@ -209,7 +296,10 @@ function updateAgeHistory() {
     });
 }
 
-// ==================== BMI CALCULATOR ====================
+// ============================================
+// BMI CALCULATOR
+// ============================================
+
 let bmiHistory = [];
 
 function calculateBMI() {
@@ -222,10 +312,10 @@ function calculateBMI() {
     const marker = document.getElementById('bmi-marker');
     
     const weight = parseFloat(weightInput.value);
-    const height = parseFloat(heightInput.value) / 100;
+    const height = parseFloat(heightInput.value) / 100; // Convert cm to m
     
     if (isNaN(weight) || isNaN(height) || weight <= 0 || height <= 0) {
-        alert('Please enter valid weight and height');
+        showToast('Please enter valid weight and height');
         return;
     }
 
@@ -238,19 +328,19 @@ function calculateBMI() {
 
     if (bmi < 18.5) {
         category = 'Underweight';
-        color = '#ffc107';
+        color = '#f59e0b';
         percentage = (bmi / 18.5) * 25;
     } else if (bmi < 25) {
         category = 'Normal weight';
-        color = '#28a745';
+        color = '#10b981';
         percentage = 25 + ((bmi - 18.5) / 6.5) * 25;
     } else if (bmi < 30) {
         category = 'Overweight';
-        color = '#ffc107';
+        color = '#f59e0b';
         percentage = 50 + ((bmi - 25) / 5) * 25;
     } else {
         category = 'Obese';
-        color = '#dc3545';
+        color = '#ef4444';
         percentage = 75 + ((bmi - 30) / 20) * 25;
     }
 
@@ -282,6 +372,8 @@ function clearBMI() {
 
 function updateBMIHistory() {
     const historyList = document.getElementById('bmi-history');
+    if (!historyList) return;
+    
     historyList.innerHTML = '';
     bmiHistory.forEach(item => {
         const div = document.createElement('div');
@@ -291,7 +383,10 @@ function updateBMIHistory() {
     });
 }
 
-// ==================== CURRENCY CONVERTER ====================
+// ============================================
+// CURRENCY CONVERTER
+// ============================================
+
 let currencyHistory = [];
 
 const exchangeRates = {
@@ -322,7 +417,7 @@ function convertCurrency() {
     const to = toSelect.value;
     
     if (isNaN(amount) || amount <= 0) {
-        alert('Please enter a valid amount');
+        showToast('Please enter a valid amount');
         return;
     }
 
@@ -334,8 +429,8 @@ function convertCurrency() {
     }
 
     const result = (amount * rate).toFixed(4);
-    fromDisplay.textContent = `${amount} ${from}`;
-    toDisplay.textContent = `${result} ${to}`;
+    fromDisplay.textContent = `${formatNumber(amount)} ${from}`;
+    toDisplay.textContent = `${formatNumber(result)} ${to}`;
     rateInfo.textContent = `1 ${from} = ${rate.toFixed(6)} ${to}`;
     resultDiv.style.display = 'block';
 
@@ -367,16 +462,21 @@ function clearCurrency() {
 
 function updateCurrencyHistory() {
     const historyList = document.getElementById('currency-history');
+    if (!historyList) return;
+    
     historyList.innerHTML = '';
     currencyHistory.forEach(item => {
         const div = document.createElement('div');
         div.className = 'history-item';
-        div.innerHTML = `<span>${item.amount} ${item.from} -> ${item.result} ${item.to}</span><span>${item.timestamp}</span>`;
+        div.innerHTML = `<span>${formatNumber(item.amount)} ${item.from} -> ${formatNumber(item.result)} ${item.to}</span><span>${item.timestamp}</span>`;
         historyList.appendChild(div);
     });
 }
 
-// ==================== LOAN CALCULATOR ====================
+// ============================================
+// LOAN CALCULATOR
+// ============================================
+
 let loanHistory = [];
 
 function calculateLoan() {
@@ -391,7 +491,7 @@ function calculateLoan() {
     const years = parseFloat(termInput.value);
     
     if (isNaN(principal) || isNaN(annualRate) || isNaN(years) || principal <= 0 || annualRate < 0 || years <= 0) {
-        alert('Please enter valid values');
+        showToast('Please enter valid values');
         return;
     }
 
@@ -404,15 +504,15 @@ function calculateLoan() {
     resultsDiv.innerHTML = `
         <div class="loan-result-item">
             <span class="loan-result-label">Monthly Payment:</span>
-            <span class="loan-result-value">$${monthlyPayment.toFixed(2)}</span>
+            <span class="loan-result-value">$${formatNumber(monthlyPayment)}</span>
         </div>
         <div class="loan-result-item">
             <span class="loan-result-label">Total Payment:</span>
-            <span class="loan-result-value">$${totalPayment.toFixed(2)}</span>
+            <span class="loan-result-value">$${formatNumber(totalPayment)}</span>
         </div>
         <div class="loan-result-item">
             <span class="loan-result-label">Total Interest:</span>
-            <span class="loan-result-value">$${totalInterest.toFixed(2)}</span>
+            <span class="loan-result-value">$${formatNumber(totalInterest)}</span>
         </div>
         <div class="loan-result-item">
             <span class="loan-result-label">Number of Payments:</span>
@@ -442,17 +542,23 @@ function clearLoan() {
 
 function updateLoanHistory() {
     const historyList = document.getElementById('loan-history');
+    if (!historyList) return;
+    
     historyList.innerHTML = '';
     loanHistory.forEach(item => {
         const div = document.createElement('div');
         div.className = 'history-item';
-        div.innerHTML = `<span>$${item.principal.toFixed(2)} at ${item.rate}% for ${item.term} years</span><span>${item.timestamp}</span>`;
+        div.innerHTML = `<span>$${formatNumber(item.principal)} at ${item.rate}% for ${item.term} years</span><span>${item.timestamp}</span>`;
         historyList.appendChild(div);
     });
 }
 
-// ==================== UNIT CONVERTER ====================
+// ============================================
+// UNIT CONVERTER
+// ============================================
+
 let unitHistory = [];
+let currentUnitCategory = 'length';
 
 const unitConversions = {
     length: { m: 1, km: 1000, cm: 0.01, mm: 0.001, in: 0.0254, ft: 0.3048, yd: 0.9144, mi: 1609.34 },
@@ -472,8 +578,8 @@ function getUnitSymbol(category, unit) {
         length: { m: 'm', km: 'km', cm: 'cm', mm: 'mm', in: 'in', ft: 'ft', yd: 'yd', mi: 'mi' },
         weight: { kg: 'kg', g: 'g', mg: 'mg', lb: 'lb', oz: 'oz', ton: 'ton' },
         temperature: { c: 'C', f: 'F', k: 'K' },
-        area: { m2: 'm2', km2: 'km2', cm2: 'cm2', ft2: 'ft2', in2: 'in2', ac: 'ac', ha: 'ha' },
-        volume: { l: 'L', ml: 'mL', m3: 'm3', gal: 'gal', qt: 'qt', pt: 'pt' },
+        area: { m2: 'm²', km2: 'km²', cm2: 'cm²', ft2: 'ft²', in2: 'in²', ac: 'ac', ha: 'ha' },
+        volume: { l: 'L', ml: 'mL', m3: 'm³', gal: 'gal', qt: 'qt', pt: 'pt' },
         speed: { mps: 'm/s', kph: 'km/h', mph: 'mph', fps: 'ft/s', knot: 'kn' }
     };
     return symbols[category] ? symbols[category][unit] : unit;
@@ -488,12 +594,14 @@ function convertUnit() {
     const fromDisplay = document.getElementById('unit-from-display');
     const toDisplay = document.getElementById('unit-to-display');
     
+    if (!valueInput || !fromSelect || !toSelect || !resultDiv) return;
+    
     const value = parseFloat(valueInput.value);
     const from = fromSelect.value;
     const to = toSelect.value;
     
     if (isNaN(value)) {
-        alert('Please enter a valid value');
+        showToast('Please enter a valid value');
         return;
     }
 
@@ -508,8 +616,8 @@ function convertUnit() {
         result = (value * fromFactor) / toFactor;
     }
 
-    fromDisplay.textContent = `${value} ${getUnitSymbol(category, from)}`;
-    toDisplay.textContent = `${result.toFixed(6)} ${getUnitSymbol(category, to)}`;
+    fromDisplay.textContent = `${formatNumber(value)} ${getUnitSymbol(category, from)}`;
+    toDisplay.textContent = `${formatNumber(result)} ${getUnitSymbol(category, to)}`;
     resultDiv.style.display = 'block';
 
     unitHistory.unshift({
@@ -537,43 +645,143 @@ function swapUnit() {
 function clearUnit() {
     const category = currentUnitCategory;
     const valueInput = document.getElementById(`unit-value-${category}`);
-    valueInput.value = '';
+    if (valueInput) valueInput.value = '';
     document.getElementById('unit-result').style.display = 'none';
 }
 
 function updateUnitHistory() {
     const historyList = document.getElementById('unit-history');
+    if (!historyList) return;
+    
     historyList.innerHTML = '';
     unitHistory.forEach(item => {
         const div = document.createElement('div');
         div.className = 'history-item';
-        div.innerHTML = `<span>${item.value} ${getUnitSymbol(item.category, item.from)} -> ${item.result.toFixed(3)} ${getUnitSymbol(item.category, item.to)}</span><span>${item.timestamp}</span>`;
+        div.innerHTML = `<span>${formatNumber(item.value)} ${getUnitSymbol(item.category, item.from)} -> ${formatNumber(item.result)} ${getUnitSymbol(item.category, item.to)}</span><span>${item.timestamp}</span>`;
         historyList.appendChild(div);
     });
 }
 
-// ==================== KEYBOARD SUPPORT ====================
-document.addEventListener('keydown', (e) => {
-    const activeTab = document.querySelector('.tab-content.active');
-    if (activeTab && activeTab.id === 'simple-calc') {
-        const display = document.getElementById('simple-display');
-        if (e.key >= '0' && e.key <= '9') {
-            display.value += e.key;
-        } else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/' || e.key === '.' || e.key === '(' || e.key === ')') {
-            display.value += e.key;
-        } else if (e.key === 'Enter' || e.key === '=') {
-            simpleCalculate();
-        } else if (e.key === 'Escape') {
-            simpleClear();
-        } else if (e.key === 'Backspace') {
-            display.value = display.value.slice(0, -1);
+// ============================================
+// KEYBOARD SUPPORT
+// ============================================
+
+function initKeyboardSupport() {
+    document.addEventListener('keydown', (e) => {
+        const activeTab = document.querySelector('.tab-content.active');
+        if (!activeTab) return;
+        
+        if (activeTab.id === 'simple-calc') {
+            const display = document.getElementById('simple-display');
+            if (!display) return;
+            
+            // Handle key presses
+            if (e.key >= '0' && e.key <= '9') {
+                simpleAppend(e.key);
+            } else if (e.key === '+' || e.key === '-' || e.key === '*' || e.key === '/' || e.key === '.' || e.key === '(' || e.key === ')') {
+                simpleAppend(e.key);
+            } else if (e.key === 'Enter' || e.key === '=') {
+                simpleCalculate();
+            } else if (e.key === 'Escape') {
+                simpleClear();
+            } else if (e.key === 'Backspace') {
+                display.value = display.value.slice(0, -1);
+            } else if (e.key === 'm' || e.key === 'M') {
+                simpleMemoryStore();
+            } else if (e.key === 'r' || e.key === 'R') {
+                simpleMemoryRecall();
+            } else if (e.key === 'c' || e.key === 'C') {
+                simpleClear();
+            }
         }
+    });
+}
+
+// ============================================
+// UTILITY FUNCTIONS
+// ============================================
+
+function formatNumber(num) {
+    // Format large numbers with commas
+    if (typeof num === 'number') {
+        return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    return num;
+}
+
+function showToast(message) {
+    // Create toast notification
+    const toast = document.createElement('div');
+    toast.className = 'toast-notification';
+    toast.textContent = message;
+    toast.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: #1f2937;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-size: 14px;
+        z-index: 10000;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        animation: slideUp 0.3s ease;
+    `;
+    document.body.appendChild(toast);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+        toast.style.animation = 'fadeOut 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+    }, 3000);
+}
+
+// Add toast animations
+const toastStyles = document.createElement('style');
+toastStyles.textContent = `
+    @keyframes slideUp {
+        from { transform: translateX(-50%) translateY(20px); opacity: 0; }
+        to { transform: translateX(-50%) translateY(0); opacity: 1; }
+    }
+    @keyframes fadeOut {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+`;
+document.head.appendChild(toastStyles);
+
+// ============================================
+// PREVENT DEFAULT BEHAVIORS
+// ============================================
+
+// Prevent double tap zoom on calculator buttons
+document.addEventListener('touchstart', (e) => {
+    if (e.target.classList.contains('calc-btn') || e.target.classList.contains('btn')) {
+        e.preventDefault();
+    }
+}, { passive: false });
+
+// Prevent context menu on calculator
+document.addEventListener('contextmenu', (e) => {
+    if (e.target.closest('.simple-calculator')) {
+        e.preventDefault();
     }
 });
 
-// ==================== INITIALIZE ====================
-document.addEventListener('DOMContentLoaded', () => {
-    initTabs();
-    initUnitCategories();
-    document.getElementById('age-dob').max = new Date().toISOString().split('T')[0];
+// ============================================
+// VIBRATION FEEDBACK FOR MOBILE
+// ============================================
+
+function vibrate(duration = 20) {
+    if ('vibrate' in navigator) {
+        navigator.vibrate(duration);
+    }
+}
+
+// Add vibration on button press for mobile
+document.querySelectorAll('.calc-btn, .btn, .tab-button, .unit-category').forEach(btn => {
+    btn.addEventListener('click', () => {
+        vibrate(10);
+    });
 });

@@ -2,36 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Multi-Calculator Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#2549ff">
+    <meta name="description" content="Professional Multi-Calculator Dashboard with 6 different calculators">
+    <title>Multi-Calculator Dashboard - Professional Calculator Suite</title>
+    
+    <!-- Google Fonts - Inter -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Apple Touch Icon -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%232549ff'/><text x='50' y='65' font-size='50' text-anchor='middle' fill='white'>📊</text></svg>">
+    
+    <!-- Stylesheet -->
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <header>
         <h1><i class="fas fa-calculator"></i> Multi-Calculator</h1>
-        <p>All-in-One Calculation Dashboard</p>
+        <p>Professional Calculation Dashboard</p>
     </header>
 
     <div class="dashboard-container">
         <div class="tabs">
             <button class="tab-button active" data-tab="simple-calc">
-                <i class="fas fa-plus"></i> Simple
+                <i class="fas fa-plus"></i>
+                <span class="tab-text">Simple</span>
             </button>
             <button class="tab-button" data-tab="age-calc">
-                <i class="fas fa-birthday-cake"></i> Age
+                <i class="fas fa-birthday-cake"></i>
+                <span class="tab-text">Age</span>
             </button>
             <button class="tab-button" data-tab="bmi-calc">
-                <i class="fas fa-weight"></i> BMI
+                <i class="fas fa-weight"></i>
+                <span class="tab-text">BMI</span>
             </button>
             <button class="tab-button" data-tab="currency-calc">
-                <i class="fas fa-money-bill-wave"></i> Currency
+                <i class="fas fa-money-bill-wave"></i>
+                <span class="tab-text">Currency</span>
             </button>
             <button class="tab-button" data-tab="loan-calc">
-                <i class="fas fa-hand-holding-usd"></i> Loan
+                <i class="fas fa-hand-holding-usd"></i>
+                <span class="tab-text">Loan</span>
             </button>
             <button class="tab-button" data-tab="unit-calc">
-                <i class="fas fa-ruler"></i> Unit Converter
+                <i class="fas fa-ruler"></i>
+                <span class="tab-text">Unit</span>
             </button>
         </div>
 
@@ -63,9 +83,15 @@
                     <button class="calc-btn equals" onclick="simpleCalculate()">=</button>
                 </div>
                 <div class="btn-group">
-                    <button class="btn btn-secondary" onclick="simpleMemoryStore()">MS</button>
-                    <button class="btn btn-secondary" onclick="simpleMemoryRecall()">MR</button>
-                    <button class="btn btn-secondary" onclick="simpleMemoryClear()">MC</button>
+                    <button class="btn btn-secondary" onclick="simpleMemoryStore()">
+                        <i class="fas fa-memory"></i> MS
+                    </button>
+                    <button class="btn btn-secondary" onclick="simpleMemoryRecall()">
+                        <i class="fas fa-undo"></i> MR
+                    </button>
+                    <button class="btn btn-secondary" onclick="simpleMemoryClear()">
+                        <i class="fas fa-trash"></i> MC
+                    </button>
                 </div>
                 <div class="history-list" id="simple-history"></div>
             </div>
@@ -123,9 +149,11 @@
                 <p id="bmi-category-text"></p>
             </div>
             <div class="bmi-chart">
-                <div class="bmi-bar">
-                    <div class="bmi-bar-fill" id="bmi-bar-fill" style="width: 0%;"></div>
-                    <div class="bmi-marker" id="bmi-marker" style="left: 0%;"></div>
+                <div class="bmi-bar-container">
+                    <div class="bmi-bar">
+                        <div class="bmi-bar-fill" id="bmi-bar-fill" style="width: 0%;"></div>
+                        <div class="bmi-marker" id="bmi-marker" style="left: 0%;"></div>
+                    </div>
                 </div>
                 <div class="bmi-category">
                     <span>Underweight</span>
@@ -239,12 +267,24 @@
         <div id="unit-calc" class="tab-content">
             <h2 class="calculator-title"><i class="fas fa-ruler"></i> Unit Converter</h2>
             <div class="unit-categories">
-                <button class="unit-category active" data-category="length">Length</button>
-                <button class="unit-category" data-category="weight">Weight</button>
-                <button class="unit-category" data-category="temperature">Temperature</button>
-                <button class="unit-category" data-category="area">Area</button>
-                <button class="unit-category" data-category="volume">Volume</button>
-                <button class="unit-category" data-category="speed">Speed</button>
+                <button class="unit-category active" data-category="length">
+                    <i class="fas fa-ruler-horizontal"></i> Length
+                </button>
+                <button class="unit-category" data-category="weight">
+                    <i class="fas fa-weight-hanging"></i> Weight
+                </button>
+                <button class="unit-category" data-category="temperature">
+                    <i class="fas fa-temperature-high"></i> Temp
+                </button>
+                <button class="unit-category" data-category="area">
+                    <i class="fas fa-square"></i> Area
+                </button>
+                <button class="unit-category" data-category="volume">
+                    <i class="fas fa-cube"></i> Volume
+                </button>
+                <button class="unit-category" data-category="speed">
+                    <i class="fas fa-tachometer-alt"></i> Speed
+                </button>
             </div>
             
             <!-- Length -->
@@ -470,6 +510,7 @@
         </div>
     </div>
 
+    <!-- Script -->
     <script src="script.js"></script>
 </body>
 </html>

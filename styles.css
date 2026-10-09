@@ -1,104 +1,282 @@
+/* ============================================
+   Multi-Calculator Dashboard - Professional Styles
+   ============================================ */
+
 :root {
-    --primary-color: #4a6bff;
-    --primary-hover: #3a5bef;
-    --secondary-color: #f8f9fa;
-    --text-color: #333;
-    --text-light: #666;
-    --border-color: #e0e0e0;
-    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    --card-bg: #ffffff;
-    --success-color: #28a745;
-    --danger-color: #dc3545;
-    --warning-color: #ffc107;
-    --info-color: #17a2b8;
+    /* Primary Colors */
+    --primary-50: #e8f0ff;
+    --primary-100: #d1e0ff;
+    --primary-200: #a6b8ff;
+    --primary-300: #7a8fff;
+    --primary-400: #4d6bff;
+    --primary-500: #2549ff;
+    --primary-600: #1d38e6;
+    --primary-700: #1426b3;
+    --primary-800: #0c1580;
+    --primary-900: #03044d;
+    
+    /* Gradient Colors */
+    --gradient-start: #6a11cb;
+    --gradient-mid: #2575fc;
+    --gradient-end: #00d4ff;
+    
+    /* Semantic Colors */
+    --success: #10b981;
+    --success-light: #d1fae5;
+    --warning: #f59e0b;
+    --warning-light: #fef3c7;
+    --danger: #ef4444;
+    --danger-light: #fee2e2;
+    --info: #06b6d4;
+    --info-light: #cffafe;
+    
+    /* Neutral Colors */
+    --gray-50: #f9fafb;
+    --gray-100: #f3f4f6;
+    --gray-200: #e5e7eb;
+    --gray-300: #d1d5db;
+    --gray-400: #9ca3af;
+    --gray-500: #6b7280;
+    --gray-600: #4b5563;
+    --gray-700: #374151;
+    --gray-800: #1f2937;
+    --gray-900: #111827;
+    
+    /* Typography */
+    --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    --font-mono: 'Fira Code', 'Monaco', 'Consolas', monospace;
+    
+    /* Spacing */
+    --space-xs: 0.25rem;
+    --space-sm: 0.5rem;
+    --space-md: 1rem;
+    --space-lg: 1.5rem;
+    --space-xl: 2rem;
+    --space-2xl: 3rem;
+    
+    /* Border Radius */
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --radius-xl: 1rem;
+    --radius-2xl: 1.5rem;
+    --radius-full: 9999px;
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+    --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+    --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    --shadow-xl: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    --shadow-glow: 0 0 40px rgba(106, 17, 203, 0.3);
+    
+    /* Transitions */
+    --transition-fast: 150ms ease;
+    --transition: 200ms ease;
+    --transition-slow: 300ms ease;
+    
+    /* Glass Effect */
+    --glass-bg: rgba(255, 255, 255, 0.95);
+    --glass-border: rgba(255, 255, 255, 0.2);
+    --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
 }
 
-* {
+/* ============================================
+   CSS Reset & Base Styles
+   ============================================ */
+
+*, *::before, *::after {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
 
+html {
+    font-size: 16px;
+    scroll-behavior: smooth;
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
-    color: var(--text-color);
+    font-family: var(--font-primary);
+    background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+    color: var(--gray-800);
+    line-height: 1.6;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
 }
 
+/* ============================================
+   Typography
+   ============================================ */
+
+h1, h2, h3, h4, h5, h6 {
+    font-weight: 700;
+    line-height: 1.3;
+    color: var(--gray-900);
+}
+
+h1 { font-size: clamp(1.875rem, 4vw, 2.5rem); }
+h2 { font-size: clamp(1.5rem, 3vw, 1.875rem); }
+h3 { font-size: clamp(1.25rem, 2.5vw, 1.5rem); }
+
+p {
+    color: var(--gray-600);
+    margin-bottom: var(--space-md);
+}
+
+a {
+    color: var(--primary-500);
+    text-decoration: none;
+    transition: color var(--transition-fast);
+}
+
+a:hover {
+    color: var(--primary-600);
+}
+
+/* ============================================
+   Header Styles
+   ============================================ */
+
 header {
-    background: linear-gradient(135deg, var(--primary-color) 0%, #6a5acd 100%);
+    background: linear-gradient(135deg, var(--primary-900) 0%, var(--gradient-start) 50%, var(--gradient-end) 100%);
     color: white;
-    padding: 20px 0;
+    padding: var(--space-xl) var(--space-md);
     text-align: center;
-    box-shadow: var(--shadow);
+    box-shadow: var(--shadow-lg);
+    position: relative;
+    overflow: hidden;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    opacity: 0.5;
 }
 
 header h1 {
-    font-size: 2.5rem;
-    margin-bottom: 10px;
+    font-size: clamp(1.75rem, 5vw, 2.5rem);
+    margin-bottom: var(--space-sm);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    text-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+header h1 i {
+    margin-right: var(--space-sm);
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
 }
 
 header p {
-    font-size: 1.1rem;
-    opacity: 0.9;
+    font-size: clamp(0.875rem, 2vw, 1.125rem);
+    opacity: 0.95;
+    font-weight: 500;
 }
 
+/* ============================================
+   Dashboard Container
+   ============================================ */
+
 .dashboard-container {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 0 20px;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: var(--space-lg);
     width: 100%;
+    flex: 1;
 }
+
+/* ============================================
+   Tabs Navigation
+   ============================================ */
 
 .tabs {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: var(--space-sm);
+    margin-bottom: var(--space-xl);
     justify-content: center;
+    position: relative;
+}
+
+.tabs::after {
+    content: '';
+    position: absolute;
+    bottom: -var(--space-md);
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    max-width: 800px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--primary-300), transparent);
 }
 
 .tab-button {
-    padding: 12px 24px;
-    background: var(--card-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 50px;
+    padding: var(--space-md) var(--space-xl);
+    background: var(--glass-bg);
+    border: 2px solid var(--glass-border);
+    border-radius: var(--radius-full);
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 1rem;
+    transition: all var(--transition);
+    font-size: clamp(0.875rem, 2vw, 1rem);
     font-weight: 600;
-    color: var(--text-color);
+    color: var(--gray-700);
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
+    white-space: nowrap;
 }
 
 .tab-button:hover {
-    background: var(--secondary-color);
-    border-color: var(--primary-color);
+    background: var(--primary-50);
+    border-color: var(--primary-200);
     transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+    color: var(--primary-600);
 }
 
 .tab-button.active {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
     color: white;
-    border-color: var(--primary-color);
+    border-color: transparent;
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
 }
 
 .tab-button i {
-    font-size: 1.1rem;
+    font-size: 1.1em;
 }
+
+.tab-button .tab-text {
+    display: none;
+}
+
+/* ============================================
+   Tab Content
+   ============================================ */
 
 .tab-content {
     display: none;
-    background: var(--card-bg);
-    border-radius: 15px;
-    padding: 30px;
-    box-shadow: var(--shadow);
-    animation: fadeIn 0.4s ease;
+    background: var(--glass-bg);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    box-shadow: var(--glass-shadow);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(10px);
+    animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .tab-content.active {
@@ -106,392 +284,878 @@ header p {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .calculator-title {
     text-align: center;
-    margin-bottom: 25px;
-    color: var(--primary-color);
-    font-size: 1.8rem;
+    margin-bottom: var(--space-xl);
+    color: var(--primary-600);
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    font-weight: 700;
+    position: relative;
+    padding-bottom: var(--space-md);
 }
 
+.calculator-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--primary-400), var(--primary-500));
+    border-radius: var(--radius-full);
+}
+
+.calculator-title i {
+    margin-right: var(--space-sm);
+    color: var(--primary-500);
+}
+
+/* ============================================
+   Form Elements
+   ============================================ */
+
 .input-group {
-    margin-bottom: 20px;
+    margin-bottom: var(--space-lg);
 }
 
 .input-group label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: var(--space-sm);
     font-weight: 600;
-    color: var(--text-light);
+    color: var(--gray-700);
+    font-size: clamp(0.875rem, 2vw, 1rem);
 }
 
 .input-group input,
 .input-group select {
     width: 100%;
-    padding: 12px 15px;
-    border: 2px solid var(--border-color);
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border-color 0.3s ease;
-    background: var(--card-bg);
+    padding: var(--space-md) var(--space-lg);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-lg);
+    font-size: clamp(0.875rem, 2vw, 1rem);
+    transition: all var(--transition);
+    background: var(--gray-50);
+    color: var(--gray-800);
+    font-family: inherit;
 }
 
 .input-group input:focus,
 .input-group select:focus {
     outline: none;
-    border-color: var(--primary-color);
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px var(--primary-50);
+    background: white;
+}
+
+.input-group input::placeholder {
+    color: var(--gray-400);
 }
 
 .input-row {
     display: flex;
-    gap: 15px;
+    gap: var(--space-lg);
+    flex-wrap: wrap;
 }
 
 .input-row .input-group {
     flex: 1;
+    min-width: 200px;
 }
 
+/* ============================================
+   Buttons
+   ============================================ */
+
 .btn {
-    padding: 12px 24px;
+    padding: var(--space-md) var(--space-xl);
     border: none;
-    border-radius: 8px;
-    font-size: 1rem;
+    border-radius: var(--radius-lg);
+    font-size: clamp(0.875rem, 2vw, 1rem);
     font-weight: 600;
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: all var(--transition);
     display: inline-flex;
     align-items: center;
-    gap: 8px;
+    gap: var(--space-sm);
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.025em;
 }
 
 .btn-primary {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
     color: white;
+    box-shadow: 0 4px 14px rgba(37, 73, 255, 0.3);
 }
 
 .btn-primary:hover {
-    background: var(--primary-hover);
+    background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
     transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(74, 107, 255, 0.3);
+    box-shadow: 0 6px 20px rgba(37, 73, 255, 0.4);
+}
+
+.btn-primary:active {
+    transform: translateY(0);
 }
 
 .btn-secondary {
-    background: var(--secondary-color);
-    color: var(--text-color);
-    border: 2px solid var(--border-color);
+    background: var(--gray-50);
+    color: var(--gray-700);
+    border: 2px solid var(--gray-200);
 }
 
 .btn-secondary:hover {
-    background: var(--border-color);
+    background: var(--gray-100);
+    border-color: var(--gray-300);
+    color: var(--gray-800);
+}
+
+.btn-success {
+    background: var(--success);
+    color: white;
+}
+
+.btn-success:hover {
+    background: #059669;
+}
+
+.btn-danger {
+    background: var(--danger);
+    color: white;
+}
+
+.btn-danger:hover {
+    background: #dc2626;
 }
 
 .btn-group {
     display: flex;
-    gap: 10px;
-    margin-top: 20px;
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
     justify-content: center;
     flex-wrap: wrap;
 }
 
-.result {
-    background: linear-gradient(135deg, #e3f2fd 0%, #f3e5f5 100%);
-    border-radius: 10px;
-    padding: 20px;
-    margin: 20px 0;
+/* ============================================
+   Display & Results
+   ============================================ */
+
+.display {
+    background: var(--gray-50);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg) var(--space-xl);
+    margin-bottom: var(--space-lg);
+    text-align: right;
+    font-size: clamp(1.5rem, 4vw, 2.5rem);
+    font-family: var(--font-mono);
+    height: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: all var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.display:focus {
+    outline: none;
+    border-color: var(--primary-500);
+    box-shadow: 0 0 0 3px var(--primary-50);
+    background: white;
+}
+
+.display::placeholder {
+    color: var(--gray-400);
     text-align: center;
-    border-left: 5px solid var(--primary-color);
+}
+
+.result {
+    background: linear-gradient(135deg, var(--primary-50) 0%, var(--gray-50) 100%);
+    border-radius: var(--radius-xl);
+    padding: var(--space-xl);
+    margin: var(--space-xl) 0;
+    text-align: center;
+    border: 2px solid var(--primary-100);
+    box-shadow: var(--shadow-md);
 }
 
 .result h3 {
-    color: var(--primary-color);
-    margin-bottom: 10px;
+    color: var(--primary-600);
+    margin-bottom: var(--space-md);
+    font-size: clamp(1.125rem, 2.5vw, 1.375rem);
 }
 
 .result-value {
-    font-size: 2rem;
-    font-weight: bold;
-    color: var(--text-color);
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+    font-weight: 800;
+    color: var(--gray-900);
+    font-family: var(--font-mono);
+    letter-spacing: -0.025em;
+}
+
+/* ============================================
+   Calculator Grid (For Simple Calculator)
+   ============================================ */
+
+.simple-calculator {
+    max-width: 100%;
+    margin: 0 auto;
 }
 
 .calculator-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
-    margin: 20px 0;
+    gap: var(--space-md);
+    margin: var(--space-lg) 0;
 }
 
 .calc-btn {
-    padding: 15px;
-    font-size: 1.2rem;
+    padding: var(--space-lg);
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
     border: none;
-    border-radius: 8px;
+    border-radius: var(--radius-xl);
     cursor: pointer;
-    transition: all 0.2s ease;
-    background: var(--secondary-color);
-    font-weight: 600;
+    transition: all var(--transition);
+    background: var(--gray-100);
+    font-weight: 700;
+    font-family: var(--font-mono);
+    color: var(--gray-800);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    aspect-ratio: 1;
+    box-shadow: var(--shadow-sm);
 }
 
 .calc-btn:hover {
-    background: var(--border-color);
+    background: var(--gray-200);
     transform: scale(1.02);
+    box-shadow: var(--shadow-md);
+}
+
+.calc-btn:active {
+    transform: scale(0.98);
+    background: var(--gray-300);
 }
 
 .calc-btn.operator {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
     color: white;
+    box-shadow: 0 4px 14px rgba(37, 73, 255, 0.3);
 }
 
 .calc-btn.operator:hover {
-    background: var(--primary-hover);
+    background: linear-gradient(135deg, var(--primary-600), var(--primary-700));
+    box-shadow: 0 6px 20px rgba(37, 73, 255, 0.4);
 }
 
 .calc-btn.equals {
-    background: var(--success-color);
+    background: linear-gradient(135deg, var(--success), #059669);
     color: white;
+    box-shadow: 0 4px 14px rgba(16, 185, 129, 0.3);
+    grid-row: span 1;
+}
+
+.calc-btn.equals:hover {
+    background: linear-gradient(135deg, #059669, #047857);
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.4);
 }
 
 .calc-btn.clear {
-    background: var(--danger-color);
+    background: linear-gradient(135deg, var(--danger), #dc2626);
     color: white;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.3);
 }
 
-.display {
-    background: var(--card-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 8px;
-    padding: 15px;
-    margin-bottom: 15px;
-    text-align: right;
-    font-size: 1.5rem;
-    height: 60px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    width: 100%;
+.calc-btn.clear:hover {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4);
 }
 
-.simple-calculator {
-    max-width: 400px;
-    margin: 0 auto;
-}
+/* ============================================
+   Age Calculator Styles
+   ============================================ */
 
 .age-result {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-    margin-top: 15px;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: var(--space-md);
+    margin-top: var(--space-lg);
 }
 
 .age-item {
-    background: var(--card-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 8px;
-    padding: 15px;
+    background: var(--glass-bg);
+    border: 2px solid var(--primary-100);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+    transition: all var(--transition);
+    backdrop-filter: blur(10px);
+}
+
+.age-item:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--primary-300);
 }
 
 .age-item-label {
-    font-size: 0.9rem;
-    color: var(--text-light);
-    margin-bottom: 5px;
+    font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+    color: var(--gray-500);
+    margin-bottom: var(--space-xs);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .age-item-value {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary-color);
+    font-size: clamp(1.5rem, 3vw, 2rem);
+    font-weight: 800;
+    color: var(--primary-600);
+    font-family: var(--font-mono);
 }
 
+/* ============================================
+   BMI Calculator Styles
+   ============================================ */
+
 .bmi-chart {
-    margin: 20px 0;
+    margin: var(--space-xl) 0;
     text-align: center;
 }
 
+.bmi-bar-container {
+    background: var(--gray-100);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
+    margin: var(--space-lg) 0;
+}
+
 .bmi-bar {
-    height: 30px;
-    border-radius: 15px;
-    margin: 5px 0;
+    height: 40px;
+    border-radius: var(--radius-full);
+    margin: var(--space-md) 0;
     position: relative;
     overflow: hidden;
-    background: var(--border-color);
+    background: linear-gradient(90deg, 
+        var(--danger-light) 0%, var(--danger-light) 25%,
+        var(--warning-light) 25%, var(--warning-light) 50%,
+        var(--success-light) 50%, var(--success-light) 75%,
+        var(--info-light) 75%, var(--info-light) 100%);
+    box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .bmi-bar-fill {
     height: 100%;
-    border-radius: 15px;
-    transition: width 0.5s ease;
+    border-radius: var(--radius-full);
+    transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    z-index: 1;
 }
 
 .bmi-marker {
     position: absolute;
     top: 0;
     height: 100%;
-    width: 3px;
-    background: black;
+    width: 4px;
+    background: var(--gray-800);
     left: 0;
+    z-index: 2;
+    border-radius: var(--radius-full);
+    box-shadow: 0 0 0 2px white;
+    transition: left 0.8s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
+.bmi-category {
+    display: flex;
+    justify-content: space-between;
+    margin-top: var(--space-md);
+    font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+    font-weight: 600;
+    color: var(--gray-600);
+}
+
+.bmi-category span {
+    flex: 1;
+    text-align: center;
+    padding: var(--space-sm);
+}
+
+.bmi-category span:nth-child(1) { color: var(--danger-600); }
+.bmi-category span:nth-child(2) { color: var(--warning-600); }
+.bmi-category span:nth-child(3) { color: var(--success-600); }
+.bmi-category span:nth-child(4) { color: var(--info-600); }
+
+/* ============================================
+   Currency Converter Styles
+   ============================================ */
+
 .currency-display {
-    font-size: 1.2rem;
-    margin: 10px 0;
+    font-size: clamp(1.25rem, 3vw, 1.75rem);
+    margin: var(--space-md) 0;
+    font-family: var(--font-mono);
+    color: var(--gray-800);
 }
 
 .rate-info {
-    font-size: 0.85rem;
-    color: var(--text-light);
+    font-size: clamp(0.875rem, 2vw, 1rem);
+    color: var(--gray-500);
     text-align: center;
-    margin: 10px 0;
+    margin: var(--space-md) 0;
 }
+
+/* ============================================
+   Loan Calculator Styles
+   ============================================ */
 
 .loan-results {
     display: grid;
-    gap: 15px;
+    gap: var(--space-md);
 }
 
 .loan-result-item {
-    background: var(--card-bg);
-    border: 2px solid var(--border-color);
-    border-radius: 8px;
-    padding: 15px;
+    background: var(--glass-bg);
+    border: 2px solid var(--primary-100);
+    border-radius: var(--radius-xl);
+    padding: var(--space-lg);
     display: flex;
     justify-content: space-between;
     align-items: center;
+    transition: all var(--transition);
+    backdrop-filter: blur(10px);
+}
+
+.loan-result-item:hover {
+    border-color: var(--primary-300);
+    box-shadow: var(--shadow-md);
+    transform: translateX(4px);
 }
 
 .loan-result-label {
     font-weight: 600;
-    color: var(--text-light);
+    color: var(--gray-600);
+    font-size: clamp(0.875rem, 2vw, 1rem);
 }
 
 .loan-result-value {
-    font-size: 1.2rem;
-    font-weight: bold;
-    color: var(--primary-color);
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+    font-weight: 800;
+    color: var(--primary-600);
+    font-family: var(--font-mono);
 }
+
+/* ============================================
+   Unit Converter Styles
+   ============================================ */
 
 .unit-categories {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 20px;
+    gap: var(--space-md);
+    margin-bottom: var(--space-xl);
     justify-content: center;
 }
 
 .unit-category {
-    padding: 8px 16px;
-    background: var(--secondary-color);
-    border: 2px solid var(--border-color);
-    border-radius: 20px;
+    padding: var(--space-md) var(--space-xl);
+    background: var(--glass-bg);
+    border: 2px solid var(--gray-200);
+    border-radius: var(--radius-full);
     cursor: pointer;
-    transition: all 0.3s ease;
-    font-size: 0.9rem;
+    transition: all var(--transition);
+    font-size: clamp(0.875rem, 2vw, 1rem);
+    font-weight: 600;
+    color: var(--gray-700);
+    backdrop-filter: blur(10px);
+    box-shadow: var(--shadow-sm);
 }
 
 .unit-category:hover {
-    background: var(--border-color);
+    background: var(--primary-50);
+    border-color: var(--primary-200);
+    color: var(--primary-600);
+    transform: translateY(-2px);
 }
 
 .unit-category.active {
-    background: var(--primary-color);
+    background: linear-gradient(135deg, var(--primary-500), var(--primary-600));
     color: white;
-    border-color: var(--primary-color);
+    border-color: transparent;
+    box-shadow: var(--shadow-lg), var(--shadow-glow);
 }
 
 .unit-options {
     display: none;
+    animation: fadeIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .unit-options.active {
     display: block;
 }
 
+/* ============================================
+   History List
+   ============================================ */
+
 .history-list {
-    max-height: 200px;
+    max-height: 250px;
     overflow-y: auto;
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    margin-top: 15px;
+    border: 2px solid var(--gray-100);
+    border-radius: var(--radius-xl);
+    margin-top: var(--space-xl);
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+}
+
+.history-list::-webkit-scrollbar {
+    width: 8px;
+}
+
+.history-list::-webkit-scrollbar-track {
+    background: var(--gray-100);
+    border-radius: var(--radius-full);
+}
+
+.history-list::-webkit-scrollbar-thumb {
+    background: var(--gray-300);
+    border-radius: var(--radius-full);
+}
+
+.history-list::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-400);
 }
 
 .history-item {
-    padding: 10px;
-    border-bottom: 1px solid var(--border-color);
-    font-size: 0.9rem;
+    padding: var(--space-md) var(--space-lg);
+    border-bottom: 1px solid var(--gray-200);
+    font-size: clamp(0.875rem, 2vw, 0.9375rem);
     display: flex;
     justify-content: space-between;
+    align-items: center;
+    transition: background var(--transition-fast);
+}
+
+.history-item:hover {
+    background: var(--gray-50);
 }
 
 .history-item:last-child {
     border-bottom: none;
 }
 
-@media (max-width: 768px) {
-    .tabs {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .tab-button {
-        width: 100%;
-        max-width: 300px;
-    }
-
-    .calculator-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    header h1 {
-        font-size: 2rem;
-    }
-
-    .input-row {
-        flex-direction: column;
-    }
-
-    .btn-group {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .btn {
-        width: 100%;
-        max-width: 300px;
-    }
+.history-item span:first-child {
+    color: var(--gray-700);
+    font-weight: 500;
 }
 
+.history-item span:last-child {
+    color: var(--gray-400);
+    font-size: 0.85em;
+}
+
+/* ============================================
+   Responsive Design - Mobile First
+   ============================================ */
+
 @media (max-width: 480px) {
-    .calculator-grid {
-        grid-template-columns: repeat(2, 1fr);
+    body {
+        padding-top: 0;
     }
-
+    
+    header {
+        padding: var(--space-lg) var(--space-md);
+    }
+    
+    header h1 {
+        font-size: 1.5rem;
+    }
+    
+    header p {
+        font-size: 0.875rem;
+    }
+    
     .dashboard-container {
-        padding: 0 10px;
+        padding: var(--space-md);
     }
-
+    
+    .tabs {
+        gap: var(--space-sm);
+        margin-bottom: var(--space-lg);
+    }
+    
+    .tab-button {
+        padding: var(--space-sm) var(--space-md);
+        font-size: 0.875rem;
+    }
+    
+    .tab-button .tab-text {
+        display: none;
+    }
+    
+    .tab-button i {
+        font-size: 1.25rem;
+    }
+    
     .tab-content {
-        padding: 20px;
+        padding: var(--space-lg);
     }
-
+    
+    /* Simple Calculator Mobile */
+    .calculator-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: var(--space-sm);
+    }
+    
+    .calc-btn {
+        padding: var(--space-lg) var(--space-md);
+        font-size: 1.5rem;
+        aspect-ratio: 1;
+    }
+    
+    .display {
+        height: 70px;
+        font-size: 1.75rem;
+        padding: var(--space-md);
+    }
+    
+    .input-row {
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+    
+    .input-row .input-group {
+        min-width: 100%;
+    }
+    
+    .btn-group {
+        flex-direction: column;
+        gap: var(--space-sm);
+    }
+    
+    .btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
     .age-result {
         grid-template-columns: repeat(2, 1fr);
     }
+    
+    .age-item {
+        padding: var(--space-md);
+    }
+    
+    .age-item-value {
+        font-size: 1.5rem;
+    }
+    
+    .bmi-bar {
+        height: 30px;
+    }
+    
+    .bmi-category {
+        font-size: 0.75rem;
+        flex-wrap: wrap;
+    }
+    
+    .bmi-category span {
+        flex: 1 1 40%;
+    }
+    
+    .unit-categories {
+        gap: var(--space-sm);
+    }
+    
+    .unit-category {
+        padding: var(--space-sm) var(--space-md);
+        font-size: 0.875rem;
+    }
+    
+    .loan-result-item {
+        flex-direction: column;
+        gap: var(--space-xs);
+        text-align: center;
+    }
+    
+    .loan-result-label {
+        color: var(--gray-500);
+    }
+    
+    .result {
+        padding: var(--space-lg);
+    }
+    
+    .result-value {
+        font-size: 1.75rem;
+    }
 }
 
-::-webkit-scrollbar {
-    width: 8px;
+@media (min-width: 481px) and (max-width: 768px) {
+    header h1 {
+        font-size: 1.75rem;
+    }
+    
+    .calculator-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .input-row {
+        flex-direction: column;
+        gap: var(--space-md);
+    }
+    
+    .btn-group {
+        flex-wrap: wrap;
+    }
+    
+    .age-result {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .bmi-category {
+        flex-wrap: wrap;
+    }
+    
+    .bmi-category span {
+        flex: 1 1 45%;
+    }
 }
 
-::-webkit-scrollbar-track {
-    background: var(--secondary-color);
-    border-radius: 4px;
+@media (min-width: 769px) and (max-width: 1024px) {
+    .calculator-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .input-row {
+        flex-direction: row;
+    }
+    
+    .btn-group {
+        flex-wrap: wrap;
+    }
+    
+    .age-result {
+        grid-template-columns: repeat(4, 1fr);
+    }
 }
 
-::-webkit-scrollbar-thumb {
-    background: var(--border-color);
-    border-radius: 4px;
+@media (min-width: 1025px) {
+    .calculator-grid {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    
+    .tabs::after {
+        display: block;
+    }
 }
 
-::-webkit-scrollbar-thumb:hover {
-    background: var(--text-light);
+/* ============================================
+   Animation Classes
+   ============================================ */
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animate-slide-in {
+    animation: slideIn 0.3s ease forwards;
+}
+
+.animate-scale-in {
+    animation: scaleIn 0.3s ease forwards;
+}
+
+/* ============================================
+   Touch Feedback for Mobile
+   ============================================ */
+
+@media (hover: none) and (pointer: coarse) {
+    .calc-btn:active,
+    .btn:active,
+    .tab-button:active,
+    .unit-category:active {
+        transform: scale(0.98);
+    }
+    
+    .calc-btn.operator:active,
+    .calc-btn.equals:active,
+    .btn-primary:active {
+        transform: scale(0.98) translateY(0);
+    }
+}
+
+/* ============================================
+   Focus Styles for Accessibility
+   ============================================ */
+
+.calc-btn:focus,
+.btn:focus,
+.tab-button:focus,
+.unit-category:focus,
+.input-group input:focus,
+.input-group select:focus {
+    outline: 3px solid var(--primary-200);
+    outline-offset: 2px;
+}
+
+/* ============================================
+   Reduced Motion
+   ============================================ */
+
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* ============================================
+   Print Styles
+   ============================================ */
+
+@media print {
+    body {
+        background: white;
+    }
+    
+    header {
+        background: var(--primary-600);
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .tab-content {
+        page-break-inside: avoid;
+    }
 }
