@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multi-Calculator Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1><i class="fas fa-calculator"></i> Multi-Calculator</h1>
+        <p>All-in-One Calculation Dashboard</p>
+    </header>
+
+    <div class="dashboard-container">
+        <div class="tabs">
+            <button class="tab-button active" data-tab="simple-calc">
+                <i class="fas fa-plus"></i> Simple
+            </button>
+            <button class="tab-button" data-tab="age-calc">
+                <i class="fas fa-birthday-cake"></i> Age
+            </button>
+            <button class="tab-button" data-tab="bmi-calc">
+                <i class="fas fa-weight"></i> BMI
+            </button>
+            <button class="tab-button" data-tab="currency-calc">
+                <i class="fas fa-money-bill-wave"></i> Currency
+            </button>
+            <button class="tab-button" data-tab="loan-calc">
+                <i class="fas fa-hand-holding-usd"></i> Loan
+            </button>
+            <button class="tab-button" data-tab="unit-calc">
+                <i class="fas fa-ruler"></i> Unit Converter
+            </button>
+        </div>
+
+        <!-- Simple Calculator Tab -->
+        <div id="simple-calc" class="tab-content active">
+            <h2 class="calculator-title"><i class="fas fa-calculator"></i> Simple Calculator</h2>
+            <div class="simple-calculator">
+                <input type="text" class="display" id="simple-display" readonly placeholder="0">
+                <input type="text" class="display" id="simple-output" readonly placeholder="Result">
+                <div class="calculator-grid">
+                    <button class="calc-btn clear" onclick="simpleClear()">C</button>
+                    <button class="calc-btn" onclick="simpleAppend('(')">(</button>
+                    <button class="calc-btn" onclick="simpleAppend(')')">)</button>
+                    <button class="calc-btn operator" onclick="simpleAppend('/')">/</button>
+                    <button class="calc-btn" onclick="simpleAppend('7')">7</button>
+                    <button class="calc-btn" onclick="simpleAppend('8')">8</button>
+                    <button class="calc-btn" onclick="simpleAppend('9')">9</button>
+                    <button class="calc-btn operator" onclick="simpleAppend('*')">x</button>
+                    <button class="calc-btn" onclick="simpleAppend('4')">4</button>
+                    <button class="calc-btn" onclick="simpleAppend('5')">5</button>
+                    <button class="calc-btn" onclick="simpleAppend('6')">6</button>
+                    <button class="calc-btn operator" onclick="simpleAppend('-')">-</button>
+                    <button class="calc-btn" onclick="simpleAppend('1')">1</button>
+                    <button class="calc-btn" onclick="simpleAppend('2')">2</button>
+                    <button class="calc-btn" onclick="simpleAppend('3')">3</button>
+                    <button class="calc-btn operator" onclick="simpleAppend('+')">+</button>
+                    <button class="calc-btn" onclick="simpleAppend('0')">0</button>
+                    <button class="calc-btn" onclick="simpleAppend('.')">.</button>
+                    <button class="calc-btn equals" onclick="simpleCalculate()">=</button>
+                </div>
+                <div class="btn-group">
+                    <button class="btn btn-secondary" onclick="simpleMemoryStore()">MS</button>
+                    <button class="btn btn-secondary" onclick="simpleMemoryRecall()">MR</button>
+                    <button class="btn btn-secondary" onclick="simpleMemoryClear()">MC</button>
+                </div>
+                <div class="history-list" id="simple-history"></div>
+            </div>
+        </div>
+
+        <!-- Age Calculator Tab -->
+        <div id="age-calc" class="tab-content">
+            <h2 class="calculator-title"><i class="fas fa-birthday-cake"></i> Age Calculator</h2>
+            <div class="input-group">
+                <label for="age-dob">Date of Birth</label>
+                <input type="date" id="age-dob" max="">
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="calculateAge()">
+                    <i class="fas fa-calculator"></i> Calculate Age
+                </button>
+                <button class="btn btn-secondary" onclick="clearAge()">
+                    <i class="fas fa-redo"></i> Clear
+                </button>
+            </div>
+            <div class="result" id="age-result" style="display: none;">
+                <h3>Your Age</h3>
+                <div class="age-result" id="age-result-details"></div>
+            </div>
+            <div class="result" id="next-birthday" style="display: none;">
+                <h3>Next Birthday</h3>
+                <div id="birthday-countdown"></div>
+            </div>
+            <div class="history-list" id="age-history"></div>
+        </div>
+
+        <!-- BMI Calculator Tab -->
+        <div id="bmi-calc" class="tab-content">
+            <h2 class="calculator-title"><i class="fas fa-weight"></i> BMI Calculator</h2>
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="bmi-weight">Weight (kg)</label>
+                    <input type="number" id="bmi-weight" placeholder="Enter weight in kg" step="0.1">
+                </div>
+                <div class="input-group">
+                    <label for="bmi-height">Height (cm)</label>
+                    <input type="number" id="bmi-height" placeholder="Enter height in cm" step="0.1">
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="calculateBMI()">
+                    <i class="fas fa-calculator"></i> Calculate BMI
+                </button>
+                <button class="btn btn-secondary" onclick="clearBMI()">
+                    <i class="fas fa-redo"></i> Clear
+                </button>
+            </div>
+            <div class="result" id="bmi-result" style="display: none;">
+                <h3>Your BMI: <span class="result-value" id="bmi-value"></span></h3>
+                <p id="bmi-category-text"></p>
+            </div>
+            <div class="bmi-chart">
+                <div class="bmi-bar">
+                    <div class="bmi-bar-fill" id="bmi-bar-fill" style="width: 0%;"></div>
+                    <div class="bmi-marker" id="bmi-marker" style="left: 0%;"></div>
+                </div>
+                <div class="bmi-category">
+                    <span>Underweight</span>
+                    <span>Normal</span>
+                    <span>Overweight</span>
+                    <span>Obese</span>
+                </div>
+            </div>
+            <div class="history-list" id="bmi-history"></div>
+        </div>
+
+        <!-- Currency Converter Tab -->
+        <div id="currency-calc" class="tab-content">
+            <h2 class="calculator-title"><i class="fas fa-money-bill-wave"></i> Currency Converter</h2>
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="currency-amount">Amount</label>
+                    <input type="number" id="currency-amount" placeholder="Enter amount" step="0.01" value="1">
+                </div>
+                <div class="input-group">
+                    <label for="currency-from">From</label>
+                    <select id="currency-from">
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="EUR">EUR - Euro</option>
+                        <option value="GBP">GBP - British Pound</option>
+                        <option value="JPY">JPY - Japanese Yen</option>
+                        <option value="AUD">AUD - Australian Dollar</option>
+                        <option value="CAD">CAD - Canadian Dollar</option>
+                        <option value="INR">INR - Indian Rupee</option>
+                        <option value="BDT">BDT - Bangladeshi Taka</option>
+                        <option value="PKR">PKR - Pakistani Rupee</option>
+                        <option value="SGD">SGD - Singapore Dollar</option>
+                    </select>
+                </div>
+            </div>
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="currency-to">To</label>
+                    <select id="currency-to">
+                        <option value="EUR">EUR - Euro</option>
+                        <option value="USD">USD - US Dollar</option>
+                        <option value="GBP">GBP - British Pound</option>
+                        <option value="JPY">JPY - Japanese Yen</option>
+                        <option value="AUD">AUD - Australian Dollar</option>
+                        <option value="CAD">CAD - Canadian Dollar</option>
+                        <option value="INR">INR - Indian Rupee</option>
+                        <option value="BDT">BDT - Bangladeshi Taka</option>
+                        <option value="PKR">PKR - Pakistani Rupee</option>
+                        <option value="SGD">SGD - Singapore Dollar</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="currency-rate">Exchange Rate (optional)</label>
+                    <input type="number" id="currency-rate" placeholder="Custom rate" step="0.0001">
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="convertCurrency()">
+                    <i class="fas fa-exchange-alt"></i> Convert
+                </button>
+                <button class="btn btn-secondary" onclick="swapCurrency()">
+                    <i class="fas fa-sync"></i> Swap
+                </button>
+                <button class="btn btn-secondary" onclick="clearCurrency()">
+                    <i class="fas fa-redo"></i> Clear
+                </button>
+            </div>
+            <div class="result" id="currency-result" style="display: none;">
+                <h3>Conversion Result</h3>
+                <div class="currency-display">
+                    <span id="currency-from-display"></span> = <span class="result-value" id="currency-to-display"></span>
+                </div>
+                <div class="rate-info" id="currency-rate-info"></div>
+            </div>
+            <div class="history-list" id="currency-history"></div>
+        </div>
+
+        <!-- Loan Calculator Tab -->
+        <div id="loan-calc" class="tab-content">
+            <h2 class="calculator-title"><i class="fas fa-hand-holding-usd"></i> Loan Calculator</h2>
+            <div class="input-group">
+                <label for="loan-amount">Loan Amount ($)</label>
+                <input type="number" id="loan-amount" placeholder="Enter loan amount" step="0.01">
+            </div>
+            <div class="input-row">
+                <div class="input-group">
+                    <label for="loan-rate">Interest Rate (%)</label>
+                    <input type="number" id="loan-rate" placeholder="Interest rate" step="0.01" min="0" max="100">
+                </div>
+                <div class="input-group">
+                    <label for="loan-term">Loan Term (years)</label>
+                    <input type="number" id="loan-term" placeholder="Loan term" step="0.5" min="0.5" max="50">
+                </div>
+            </div>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="calculateLoan()">
+                    <i class="fas fa-calculator"></i> Calculate
+                </button>
+                <button class="btn btn-secondary" onclick="clearLoan()">
+                    <i class="fas fa-redo"></i> Clear
+                </button>
+            </div>
+            <div class="result" id="loan-result" style="display: none;">
+                <h3>Loan Summary</h3>
+                <div class="loan-results" id="loan-results"></div>
+            </div>
+            <div class="history-list" id="loan-history"></div>
+        </div>
+
+        <!-- Unit Converter Tab -->
+        <div id="unit-calc" class="tab-content">
+            <h2 class="calculator-title"><i class="fas fa-ruler"></i> Unit Converter</h2>
+            <div class="unit-categories">
+                <button class="unit-category active" data-category="length">Length</button>
+                <button class="unit-category" data-category="weight">Weight</button>
+                <button class="unit-category" data-category="temperature">Temperature</button>
+                <button class="unit-category" data-category="area">Area</button>
+                <button class="unit-category" data-category="volume">Volume</button>
+                <button class="unit-category" data-category="speed">Speed</button>
+            </div>
+            
+            <!-- Length -->
+            <div id="unit-length" class="unit-options active">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="unit-value-length">Value</label>
+                        <input type="number" id="unit-value-length" placeholder="Enter value" step="0.0001">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="unit-from-length">From</label>
+                        <select id="unit-from-length">
+                            <option value="m">Meter (m)</option>
+                            <option value="km">Kilometer (km)</option>
+                            <option value="cm">Centimeter (cm)</option>
+                            <option value="mm">Millimeter (mm)</option>
+                            <option value="in">Inch (in)</option>
+                            <option value="ft">Foot (ft)</option>
+                            <option value="yd">Yard (yd)</option>
+                            <option value="mi">Mile (mi)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="unit-to-length">To</label>
+                        <select id="unit-to-length">
+                            <option value="km">Kilometer (km)</option>
+                            <option value="m">Meter (m)</option>
+                            <option value="cm">Centimeter (cm)</option>
+                            <option value="mm">Millimeter (mm)</option>
+                            <option value="in">Inch (in)</option>
+                            <option value="ft">Foot (ft)</option>
+                            <option value="yd">Yard (yd)</option>
+                            <option value="mi">Mile (mi)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Weight -->
+            <div id="unit-weight" class="unit-options">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="unit-value-weight">Value</label>
+                        <input type="number" id="unit-value-weight" placeholder="Enter value" step="0.0001">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="unit-from-weight">From</label>
+                        <select id="unit-from-weight">
+                            <option value="kg">Kilogram (kg)</option>
+                            <option value="g">Gram (g)</option>
+                            <option value="mg">Milligram (mg)</option>
+                            <option value="lb">Pound (lb)</option>
+                            <option value="oz">Ounce (oz)</option>
+                            <option value="ton">Ton (ton)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="unit-to-weight">To</label>
+                        <select id="unit-to-weight">
+                            <option value="g">Gram (g)</option>
+                            <option value="kg">Kilogram (kg)</option>
+                            <option value="mg">Milligram (mg)</option>
+                            <option value="lb">Pound (lb)</option>
+                            <option value="oz">Ounce (oz)</option>
+                            <option value="ton">Ton (ton)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Temperature -->
+            <div id="unit-temperature" class="unit-options">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="unit-value-temperature">Value</label>
+                        <input type="number" id="unit-value-temperature" placeholder="Enter value" step="0.01">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="unit-from-temperature">From</label>
+                        <select id="unit-from-temperature">
+                            <option value="c">Celsius (C)</option>
+                            <option value="f">Fahrenheit (F)</option>
+                            <option value="k">Kelvin (K)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="unit-to-temperature">To</label>
+                        <select id="unit-to-temperature">
+                            <option value="f">Fahrenheit (F)</option>
+                            <option value="c">Celsius (C)</option>
+                            <option value="k">Kelvin (K)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Area -->
+            <div id="unit-area" class="unit-options">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="unit-value-area">Value</label>
+                        <input type="number" id="unit-value-area" placeholder="Enter value" step="0.0001">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="unit-from-area">From</label>
+                        <select id="unit-from-area">
+                            <option value="m2">Square Meter (m2)</option>
+                            <option value="km2">Square Kilometer (km2)</option>
+                            <option value="cm2">Square Centimeter (cm2)</option>
+                            <option value="ft2">Square Foot (ft2)</option>
+                            <option value="in2">Square Inch (in2)</option>
+                            <option value="ac">Acre (ac)</option>
+                            <option value="ha">Hectare (ha)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="unit-to-area">To</label>
+                        <select id="unit-to-area">
+                            <option value="km2">Square Kilometer (km2)</option>
+                            <option value="m2">Square Meter (m2)</option>
+                            <option value="cm2">Square Centimeter (cm2)</option>
+                            <option value="ft2">Square Foot (ft2)</option>
+                            <option value="in2">Square Inch (in2)</option>
+                            <option value="ac">Acre (ac)</option>
+                            <option value="ha">Hectare (ha)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Volume -->
+            <div id="unit-volume" class="unit-options">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="unit-value-volume">Value</label>
+                        <input type="number" id="unit-value-volume" placeholder="Enter value" step="0.0001">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="unit-from-volume">From</label>
+                        <select id="unit-from-volume">
+                            <option value="l">Liter (L)</option>
+                            <option value="ml">Milliliter (mL)</option>
+                            <option value="m3">Cubic Meter (m3)</option>
+                            <option value="gal">Gallon (gal)</option>
+                            <option value="qt">Quart (qt)</option>
+                            <option value="pt">Pint (pt)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="unit-to-volume">To</label>
+                        <select id="unit-to-volume">
+                            <option value="ml">Milliliter (mL)</option>
+                            <option value="l">Liter (L)</option>
+                            <option value="m3">Cubic Meter (m3)</option>
+                            <option value="gal">Gallon (gal)</option>
+                            <option value="qt">Quart (qt)</option>
+                            <option value="pt">Pint (pt)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Speed -->
+            <div id="unit-speed" class="unit-options">
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="unit-value-speed">Value</label>
+                        <input type="number" id="unit-value-speed" placeholder="Enter value" step="0.0001">
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="input-group">
+                        <label for="unit-from-speed">From</label>
+                        <select id="unit-from-speed">
+                            <option value="mps">Meter/second (m/s)</option>
+                            <option value="kph">Kilometer/hour (km/h)</option>
+                            <option value="mph">Mile/hour (mph)</option>
+                            <option value="fps">Foot/second (ft/s)</option>
+                            <option value="knot">Knot (kn)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label for="unit-to-speed">To</label>
+                        <select id="unit-to-speed">
+                            <option value="kph">Kilometer/hour (km/h)</option>
+                            <option value="mps">Meter/second (m/s)</option>
+                            <option value="mph">Mile/hour (mph)</option>
+                            <option value="fps">Foot/second (ft/s)</option>
+                            <option value="knot">Knot (kn)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="convertUnit()">
+                    <i class="fas fa-exchange-alt"></i> Convert
+                </button>
+                <button class="btn btn-secondary" onclick="swapUnit()">
+                    <i class="fas fa-sync"></i> Swap
+                </button>
+                <button class="btn btn-secondary" onclick="clearUnit()">
+                    <i class="fas fa-redo"></i> Clear
+                </button>
+            </div>
+            <div class="result" id="unit-result" style="display: none;">
+                <h3>Conversion Result</h3>
+                <div class="currency-display">
+                    <span id="unit-from-display"></span> = <span class="result-value" id="unit-to-display"></span>
+                </div>
+            </div>
+            <div class="history-list" id="unit-history"></div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
