@@ -133,22 +133,5 @@ Loan amount, interest rate, term inputs
 
 ---
 
-## স্ক্রিনশট | Screenshot
 
-![Multi-Calculator Dashboard](https://img.shields.io/badge/Status-Online-brightgreen)
 
----
-
-## লাইভ ডেমো | Live Demo
-
-প্রজেক্টটি দেখতে [GitHub Repository](https://github.com/yeasin4745/Calculator-) ভিজিট করুন এবং `index.html` ডাউনলোড করে ব্রাউজারে ওপেন করুন।
-
-Visit the [GitHub Repository](https://github.com/yeasin4745/Calculator-) and download `index.html` to open in your browser.
-
----
-
-## লাইসেন্স | License
-
-এই প্রজেক্টটি মুক্ত সফটওয়্যার এবং যে কেউ ব্যবহার করতে পারে।
-
-This project is free software and anyone can use it.
